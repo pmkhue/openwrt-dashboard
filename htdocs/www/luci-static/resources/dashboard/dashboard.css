@@ -1,0 +1,656 @@
+/* ==========================================================================
+   luci-app-dashboard - NOC Wall Theme
+   Scoped to .dashboard-noc to avoid leaking into OpenWrt Bootstrap theme
+   ========================================================================== */
+
+.dashboard-noc {
+	--bg: #0B1220;
+	--panel: #121B2E;
+	--panel-2: #0F1728;
+	--grid: #1E2A42;
+	--border: #223252;
+	--text: #E6EDF5;
+	--muted: #7C8BA3;
+	--cyan: #22D3EE;
+	--amber: #F5A524;
+	--red: #F0555A;
+	--green: #3DDC84;
+
+	--font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+	--font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font-sans);
+	font-size: 14px;
+	line-height: 1.5;
+	padding: 16px;
+	margin: -15px -15px 0 -15px; /* offset standard LuCI content padding if needed */
+	min-height: calc(100vh - 100px);
+	box-sizing: border-box;
+}
+
+.dashboard-noc * {
+	box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Header Bar
+   ========================================================================== */
+
+.dashboard-noc .noc-header {
+	background: linear-gradient(180deg, rgba(18, 27, 46, 0.95) 0%, rgba(15, 23, 40, 0.85) 100%);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	padding: 16px 20px;
+	margin-bottom: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.dashboard-noc .noc-header-left {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.dashboard-noc .noc-title-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.dashboard-noc .noc-title {
+	font-size: 22px;
+	font-weight: 700;
+	color: #FFFFFF;
+	margin: 0;
+	letter-spacing: -0.02em;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.dashboard-noc .noc-subtitle {
+	font-size: 12px;
+	color: var(--muted);
+	margin-top: 2px;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.dashboard-noc .noc-live-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	padding: 3px 8px;
+	border-radius: 9999px;
+	background: rgba(61, 220, 132, 0.12);
+	color: var(--green);
+	border: 1px solid rgba(61, 220, 132, 0.3);
+	letter-spacing: 0.05em;
+}
+
+.dashboard-noc .noc-pulse-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background-color: var(--green);
+	box-shadow: 0 0 8px var(--green);
+	animation: noc-pulse 2s infinite;
+}
+
+@keyframes noc-pulse {
+	0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.7); }
+	70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(61, 220, 132, 0); }
+	100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(61, 220, 132, 0); }
+}
+
+.dashboard-noc .noc-header-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+}
+
+.dashboard-noc .noc-badge {
+	background-color: var(--panel-2);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 5px 10px;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.dashboard-noc .noc-badge-label {
+	color: var(--muted);
+	font-size: 11px;
+	text-transform: uppercase;
+}
+
+.dashboard-noc .noc-badge-value {
+	color: var(--text);
+	font-family: var(--font-mono);
+	font-weight: 500;
+}
+
+/* ==========================================================================
+   Gauge Cards Row
+   ========================================================================== */
+
+.dashboard-noc .noc-gauge-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.dashboard-noc .noc-card {
+	background: var(--panel);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	padding: 16px;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+	position: relative;
+	overflow: hidden;
+	transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-noc .noc-card:hover {
+	border-color: rgba(34, 211, 238, 0.4);
+}
+
+.dashboard-noc .noc-card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.dashboard-noc .noc-card-title {
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--muted);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.dashboard-noc .noc-gauge-body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 6px 0;
+}
+
+.dashboard-noc .noc-gauge-svg-wrap {
+	position: relative;
+	width: 140px;
+	height: 140px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dashboard-noc .noc-gauge-svg {
+	width: 100%;
+	height: 100%;
+	transform: rotate(-90deg);
+}
+
+.dashboard-noc .noc-gauge-track {
+	fill: none;
+	stroke: var(--grid);
+	stroke-width: 10;
+}
+
+.dashboard-noc .noc-gauge-val {
+	fill: none;
+	stroke-width: 10;
+	stroke-linecap: round;
+	transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease;
+}
+
+.dashboard-noc .noc-gauge-val-cyan { stroke: var(--cyan); filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.4)); }
+.dashboard-noc .noc-gauge-val-green { stroke: var(--green); filter: drop-shadow(0 0 6px rgba(61, 220, 132, 0.4)); }
+.dashboard-noc .noc-gauge-val-amber { stroke: var(--amber); filter: drop-shadow(0 0 6px rgba(245, 165, 36, 0.4)); }
+.dashboard-noc .noc-gauge-val-red { stroke: var(--red); filter: drop-shadow(0 0 6px rgba(240, 85, 90, 0.4)); }
+
+.dashboard-noc .noc-gauge-center {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.dashboard-noc .noc-gauge-center-num {
+	font-family: var(--font-mono);
+	font-size: 24px;
+	font-weight: 700;
+	color: #FFFFFF;
+	line-height: 1.1;
+}
+
+.dashboard-noc .noc-gauge-center-unit {
+	font-size: 11px;
+	color: var(--muted);
+	text-transform: uppercase;
+	margin-top: 2px;
+}
+
+.dashboard-noc .noc-gauge-footer {
+	margin-top: 12px;
+	width: 100%;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--muted);
+	display: flex;
+	justify-content: space-between;
+	padding: 6px 10px;
+	background: var(--panel-2);
+	border-radius: 6px;
+	border: 1px solid rgba(34, 50, 82, 0.6);
+}
+
+.dashboard-noc .noc-gauge-footer-highlight {
+	color: var(--text);
+	font-weight: 600;
+}
+
+/* ==========================================================================
+   Traffic Monitor Panel
+   ========================================================================== */
+
+.dashboard-noc .noc-traffic-panel {
+	margin-bottom: 20px;
+}
+
+.dashboard-noc .noc-traffic-top {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+	.dashboard-noc .noc-traffic-top {
+		grid-template-columns: 1fr;
+	}
+}
+
+.dashboard-noc .noc-traffic-stat-box {
+	background: var(--panel-2);
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	padding: 14px 18px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+	overflow: hidden;
+}
+
+.dashboard-noc .noc-traffic-stat-box.box-rx::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 4px;
+	background-color: var(--cyan);
+	box-shadow: 0 0 10px var(--cyan);
+}
+
+.dashboard-noc .noc-traffic-stat-box.box-tx::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 4px;
+	background-color: var(--amber);
+	box-shadow: 0 0 10px var(--amber);
+}
+
+.dashboard-noc .noc-traffic-stat-dir {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--muted);
+	margin-bottom: 4px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.dashboard-noc .noc-traffic-stat-rate {
+	font-family: var(--font-mono);
+	font-size: 26px;
+	font-weight: 700;
+	line-height: 1.1;
+}
+
+.dashboard-noc .noc-traffic-stat-rate.rate-rx { color: var(--cyan); text-shadow: 0 0 12px rgba(34, 211, 238, 0.3); }
+.dashboard-noc .noc-traffic-stat-rate.rate-tx { color: var(--amber); text-shadow: 0 0 12px rgba(245, 165, 36, 0.3); }
+
+.dashboard-noc .noc-traffic-stat-total {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--muted);
+	text-align: right;
+}
+
+.dashboard-noc .noc-traffic-stat-total-num {
+	color: var(--text);
+	font-weight: 600;
+}
+
+.dashboard-noc .noc-chart-container {
+	position: relative;
+	width: 100%;
+	height: 220px;
+	background: #080E1A;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.dashboard-noc .noc-chart-canvas {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.dashboard-noc .noc-chart-legend {
+	display: flex;
+	gap: 16px;
+	font-size: 12px;
+	align-items: center;
+}
+
+.dashboard-noc .noc-legend-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--font-mono);
+}
+
+.dashboard-noc .noc-legend-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 2px;
+}
+
+.dashboard-noc .noc-legend-dot-rx { background-color: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.dashboard-noc .noc-legend-dot-tx { background-color: var(--amber); box-shadow: 0 0 6px var(--amber); }
+
+/* ==========================================================================
+   Two-Column Split (Processes & Clients)
+   ========================================================================== */
+
+.dashboard-noc .noc-two-col {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+@media (max-width: 960px) {
+	.dashboard-noc .noc-two-col {
+		grid-template-columns: 1fr;
+	}
+}
+
+.dashboard-noc .noc-table-wrap {
+	max-height: 380px;
+	overflow-y: auto;
+	overflow-x: auto;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: var(--panel-2);
+}
+
+.dashboard-noc .noc-table-wrap::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+.dashboard-noc .noc-table-wrap::-webkit-scrollbar-track {
+	background: var(--panel-2);
+}
+
+.dashboard-noc .noc-table-wrap::-webkit-scrollbar-thumb {
+	background: var(--border);
+	border-radius: 3px;
+}
+
+.dashboard-noc .noc-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 12px;
+	text-align: left;
+}
+
+.dashboard-noc .noc-table th {
+	background-color: #0E1626;
+	color: var(--muted);
+	font-weight: 600;
+	text-transform: uppercase;
+	font-size: 11px;
+	letter-spacing: 0.05em;
+	padding: 10px 12px;
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	border-bottom: 1px solid var(--border);
+	white-space: nowrap;
+}
+
+.dashboard-noc .noc-table td {
+	padding: 9px 12px;
+	border-bottom: 1px solid rgba(34, 50, 82, 0.4);
+	color: var(--text);
+	white-space: nowrap;
+}
+
+.dashboard-noc .noc-table tr:hover td {
+	background-color: rgba(34, 211, 238, 0.04);
+}
+
+.dashboard-noc .noc-mono {
+	font-family: var(--font-mono);
+}
+
+.dashboard-noc .noc-proc-name {
+	font-weight: 600;
+	color: #FFFFFF;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.dashboard-noc .noc-proc-bar-wrap {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.dashboard-noc .noc-proc-bar {
+	width: 60px;
+	height: 5px;
+	background-color: var(--grid);
+	border-radius: 3px;
+	overflow: hidden;
+	position: relative;
+}
+
+.dashboard-noc .noc-proc-bar-fill {
+	height: 100%;
+	background-color: var(--cyan);
+	border-radius: 3px;
+}
+
+.dashboard-noc .noc-approx-icon {
+	color: var(--muted);
+	font-size: 11px;
+	margin-left: 2px;
+}
+
+.dashboard-noc .noc-tab-group {
+	display: inline-flex;
+	background: var(--panel-2);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 2px;
+	gap: 2px;
+}
+
+.dashboard-noc .noc-tab-btn {
+	background: transparent;
+	border: none;
+	color: var(--muted);
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	padding: 3px 8px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.15s ease;
+}
+
+.dashboard-noc .noc-tab-btn:hover {
+	color: var(--text);
+}
+
+.dashboard-noc .noc-tab-btn.active {
+	background-color: var(--grid);
+	color: var(--cyan);
+}
+
+/* ==========================================================================
+   Ports Panel (Physical Network Ports)
+   ========================================================================== */
+
+.dashboard-noc .noc-ports-panel {
+	margin-bottom: 20px;
+}
+
+.dashboard-noc .noc-ports-matrix {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-bottom: 16px;
+	background: var(--panel-2);
+	padding: 16px;
+	border-radius: 10px;
+	border: 1px solid var(--border);
+}
+
+.dashboard-noc .noc-port-jack {
+	background: #0B1220;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 10px 14px;
+	min-width: 120px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+	transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.dashboard-noc .noc-port-jack:hover {
+	border-color: rgba(34, 211, 238, 0.4);
+	transform: translateY(-2px);
+}
+
+.dashboard-noc .noc-port-jack.is-linked {
+	border-color: rgba(61, 220, 132, 0.4);
+}
+
+.dashboard-noc .noc-port-leds {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin-bottom: 8px;
+}
+
+.dashboard-noc .noc-led {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #1E2A42;
+	border: 1px solid #121B2E;
+}
+
+.dashboard-noc .noc-led-link.on {
+	background-color: var(--green);
+	box-shadow: 0 0 8px var(--green);
+}
+
+.dashboard-noc .noc-led-act.on {
+	background-color: var(--amber);
+	box-shadow: 0 0 8px var(--amber);
+	animation: noc-led-blink 1s infinite alternate;
+}
+
+@keyframes noc-led-blink {
+	0% { opacity: 0.3; }
+	100% { opacity: 1; }
+}
+
+.dashboard-noc .noc-port-label {
+	font-size: 13px;
+	font-weight: 700;
+	color: #FFFFFF;
+	margin-bottom: 4px;
+	letter-spacing: 0.05em;
+}
+
+.dashboard-noc .noc-port-speed {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--muted);
+}
+
+.dashboard-noc .noc-port-speed.active {
+	color: var(--cyan);
+	font-weight: 600;
+}
+
+.dashboard-noc .noc-port-status-badge {
+	display: inline-block;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	padding: 2px 6px;
+	border-radius: 4px;
+	margin-top: 4px;
+}
+
+.dashboard-noc .noc-port-status-badge.up {
+	background: rgba(61, 220, 132, 0.15);
+	color: var(--green);
+}
+
+.dashboard-noc .noc-port-status-badge.down {
+	background: rgba(124, 139, 163, 0.15);
+	color: var(--muted);
+}

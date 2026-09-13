@@ -1,0 +1,16 @@
+{
+  "luci-app-dashboard": {
+    "description": "Access to dashboard status data",
+    "read": {
+      "ubus": {
+        "luci.dashboard": [
+          "system_info",
+          "traffic",
+          "processes",
+          "clients",
+          "ports"
+        ]
+      }
+    }
+  }
+}

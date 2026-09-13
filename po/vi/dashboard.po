@@ -1,0 +1,173 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Dashboard"
+msgstr "Bảng điều khiển"
+
+msgid "NOC WALL LIVE"
+msgstr "NOC WALL TRỰC TIẾP"
+
+msgid "KERNEL"
+msgstr "NHÂN KERNEL"
+
+msgid "UPTIME"
+msgstr "HOẠT ĐỘNG"
+
+msgid "CPU UTILIZATION"
+msgstr "MỨC SỬ DỤNG CPU"
+
+msgid "CORES"
+msgstr "LÕI"
+
+msgid "ACTIVE"
+msgstr "HOẠT ĐỘNG"
+
+msgid "MEMORY (RAM)"
+msgstr "BỘ NHỚ (RAM)"
+
+msgid "USED"
+msgstr "ĐÃ DÙNG"
+
+msgid "FREE"
+msgstr "CÒN TRỐNG"
+
+msgid "TOTAL"
+msgstr "TỔNG"
+
+msgid "STORAGE (/OVERLAY)"
+msgstr "DUNG LƯỢNG (/OVERLAY)"
+
+msgid "SOC TEMPERATURE"
+msgstr "NHIỆT ĐỘ SOC"
+
+msgid "THERMAL ZONE"
+msgstr "CẢM BIẾN NHIỆT"
+
+msgid "NO SENSOR"
+msgstr "KHÔNG CÓ CẢM BIẾN"
+
+msgid "STATUS"
+msgstr "TRẠNG THÁI"
+
+msgid "NORMAL"
+msgstr "BÌNH THƯỜNG"
+
+msgid "HOT"
+msgstr "QUÁ NHIỆT"
+
+msgid "DISABLED"
+msgstr "TẮT"
+
+msgid "WAN REAL-TIME TRAFFIC WAVEFORM"
+msgstr "LƯU LƯỢNG WAN THỜI GIAN THỰC"
+
+msgid "DOWNLOAD (RX)"
+msgstr "TẢI XUỐNG (RX)"
+
+msgid "UPLOAD (TX)"
+msgstr "TẢI LÊN (TX)"
+
+msgid "CURRENT DOWNLOAD"
+msgstr "TỐC ĐỘ TẢI XUỐNG"
+
+msgid "CURRENT UPLOAD"
+msgstr "TỐC ĐỘ TẢI LÊN"
+
+msgid "TOTAL DOWNLOADED"
+msgstr "TỔNG ĐÃ TẢI VỀ"
+
+msgid "TOTAL UPLOADED"
+msgstr "TỔNG ĐÃ TẢI LÊN"
+
+msgid "Collecting traffic data..."
+msgstr "Đang thu thập dữ liệu lưu lượng..."
+
+msgid "Waiting for incoming traffic samples..."
+msgstr "Đang đợi mẫu dữ liệu tiếp theo..."
+
+msgid "PROCESSES (HTOP)"
+msgstr "TIẾN TRÌNH HỆ THỐNG (HTOP)"
+
+msgid "PID"
+msgstr "PID"
+
+msgid "PROCESS"
+msgstr "TIẾN TRÌNH"
+
+msgid "CPU%"
+msgstr "CPU%"
+
+msgid "RAM"
+msgstr "RAM"
+
+msgid "NET"
+msgstr "MẠNG"
+
+msgid "Estimated bandwidth"
+msgstr "Băng thông ước lượng"
+
+msgid "No process information available"
+msgstr "Không có thông tin tiến trình"
+
+msgid "CONNECTED CLIENTS"
+msgstr "THIẾT BỊ ĐANG KẾT NỐI"
+
+msgid "HOST"
+msgstr "THIẾT BỊ"
+
+msgid "IP ADDRESS"
+msgstr "ĐỊA CHỈ IP"
+
+msgid "MAC ADDRESS"
+msgstr "ĐỊA CHỈ MAC"
+
+msgid "TRAFFIC (RX / TX)"
+msgstr "LƯU LƯỢNG (RX / TX)"
+
+msgid "No active clients detected"
+msgstr "Không phát hiện thiết bị đang hoạt động"
+
+msgid "PHYSICAL PORT MATRIX & LINK STATUS"
+msgstr "MA TRẬN CỔNG VẬT LÝ & TRẠNG THÁI LINK"
+
+msgid "LINK"
+msgstr "LIÊN KẾT"
+
+msgid "ACTIVITY"
+msgstr "HOẠT ĐỘNG"
+
+msgid "PORT"
+msgstr "CỔNG"
+
+msgid "SPEED / DUPLEX"
+msgstr "TỐC ĐỘ / DUPLEX"
+
+msgid "CURRENT RX"
+msgstr "RX HIỆN TẠI"
+
+msgid "CURRENT TX"
+msgstr "TX HIỆN TẠI"
+
+msgid "TOTAL RX"
+msgstr "TỔNG RX"
+
+msgid "TOTAL TX"
+msgstr "TỔNG TX"
+
+msgid "CONNECTED"
+msgstr "ĐÃ KẾT NỐI"
+
+msgid "DOWN"
+msgstr "NGẮT"
+
+msgid "UP"
+msgstr "BẬT"
+
+msgid "No Link"
+msgstr "Mất liên kết"
+
+msgid "No physical network ports found"
+msgstr "Không tìm thấy cổng mạng vật lý"

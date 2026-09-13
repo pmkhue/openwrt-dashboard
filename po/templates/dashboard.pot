@@ -1,0 +1,170 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "NOC WALL LIVE"
+msgstr ""
+
+msgid "KERNEL"
+msgstr ""
+
+msgid "UPTIME"
+msgstr ""
+
+msgid "CPU UTILIZATION"
+msgstr ""
+
+msgid "CORES"
+msgstr ""
+
+msgid "ACTIVE"
+msgstr ""
+
+msgid "MEMORY (RAM)"
+msgstr ""
+
+msgid "USED"
+msgstr ""
+
+msgid "FREE"
+msgstr ""
+
+msgid "TOTAL"
+msgstr ""
+
+msgid "STORAGE (/OVERLAY)"
+msgstr ""
+
+msgid "SOC TEMPERATURE"
+msgstr ""
+
+msgid "THERMAL ZONE"
+msgstr ""
+
+msgid "NO SENSOR"
+msgstr ""
+
+msgid "STATUS"
+msgstr ""
+
+msgid "NORMAL"
+msgstr ""
+
+msgid "HOT"
+msgstr ""
+
+msgid "DISABLED"
+msgstr ""
+
+msgid "WAN REAL-TIME TRAFFIC WAVEFORM"
+msgstr ""
+
+msgid "DOWNLOAD (RX)"
+msgstr ""
+
+msgid "UPLOAD (TX)"
+msgstr ""
+
+msgid "CURRENT DOWNLOAD"
+msgstr ""
+
+msgid "CURRENT UPLOAD"
+msgstr ""
+
+msgid "TOTAL DOWNLOADED"
+msgstr ""
+
+msgid "TOTAL UPLOADED"
+msgstr ""
+
+msgid "Collecting traffic data..."
+msgstr ""
+
+msgid "Waiting for incoming traffic samples..."
+msgstr ""
+
+msgid "PROCESSES (HTOP)"
+msgstr ""
+
+msgid "PID"
+msgstr ""
+
+msgid "PROCESS"
+msgstr ""
+
+msgid "CPU%"
+msgstr ""
+
+msgid "RAM"
+msgstr ""
+
+msgid "NET"
+msgstr ""
+
+msgid "Estimated bandwidth"
+msgstr ""
+
+msgid "No process information available"
+msgstr ""
+
+msgid "CONNECTED CLIENTS"
+msgstr ""
+
+msgid "HOST"
+msgstr ""
+
+msgid "IP ADDRESS"
+msgstr ""
+
+msgid "MAC ADDRESS"
+msgstr ""
+
+msgid "TRAFFIC (RX / TX)"
+msgstr ""
+
+msgid "No active clients detected"
+msgstr ""
+
+msgid "PHYSICAL PORT MATRIX & LINK STATUS"
+msgstr ""
+
+msgid "LINK"
+msgstr ""
+
+msgid "ACTIVITY"
+msgstr ""
+
+msgid "PORT"
+msgstr ""
+
+msgid "SPEED / DUPLEX"
+msgstr ""
+
+msgid "CURRENT RX"
+msgstr ""
+
+msgid "CURRENT TX"
+msgstr ""
+
+msgid "TOTAL RX"
+msgstr ""
+
+msgid "TOTAL TX"
+msgstr ""
+
+msgid "CONNECTED"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
+msgid "UP"
+msgstr ""
+
+msgid "No Link"
+msgstr ""
+
+msgid "No physical network ports found"
+msgstr ""
