@@ -96,27 +96,39 @@ The dashboard is organized into 5 structured panels:
 │  [LAN3] NO LINK (DOWN)  |  [LAN4] NO LINK (DOWN)                             │
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
-
+![https://github.com/pmkhue/openwrt-dashboard/blob/main/Screenshot%202026-09-13%20at%2018.07.16.png?raw=true](https://)
 ---
 
 ## 🚀 Installation & Quick Start
 
-### Method 1: Pre-built IPK Installation (Recommended)
+### Method 1: Web Interface LuCI (Easiest - No SSH required)
 
-1. Download the latest release `.ipk` package from the [GitHub Releases](https://github.com/) page:
-   ```sh
-   # Example: Download directly to your router /tmp directory
-   wget -O /tmp/luci-app-dashboard_1.0-1_all.ipk https://github.com/<your-username>/<your-repo>/releases/latest/download/luci-app-dashboard_1.0-1_all.ipk
+1. Open your browser and log into LuCI (`http://192.168.1.1`).
+2. Navigate to **System** ➔ **Software**.
+3. Paste the following URL into **"Download and install package"**:
+   ```text
+   https://github.com/pmkhue/openwrt-dashboard/releases/latest/download/luci-app-dashboard.ipk
    ```
+4. Click **OK**. LuCI will automatically download, unpack, and activate the dashboard.
 
-2. Install dependencies and the package using `opkg`:
+---
+
+### Method 2: Command Line (SSH `opkg`)
+
+1. Connect to your router via SSH (`ssh root@192.168.1.1`).
+2. Update package lists and install required dependencies:
    ```sh
    opkg update
    opkg install rpcd ubus jsonfilter ethtool
-   opkg install /tmp/luci-app-dashboard_1.0-1_all.ipk
+   ```
+3. Install `luci-app-dashboard` directly from the GitHub Release URL:
+   ```sh
+   opkg install https://github.com/pmkhue/openwrt-dashboard/releases/latest/download/luci-app-dashboard.ipk
    ```
 
-3. Restart services and flush LuCI index cache:
+   *(Note: If your OpenWrt router gives an SSL certificate or connection error, run `opkg update && opkg install ca-bundle libustream-mbedtls`, or download to `/tmp` via `wget --no-check-certificate -O /tmp/luci-app-dashboard.ipk https://github.com/pmkhue/openwrt-dashboard/releases/latest/download/luci-app-dashboard.ipk && opkg install /tmp/luci-app-dashboard.ipk`)*
+
+4. Restart services and flush LuCI index cache:
    ```sh
    /etc/init.d/dashboardd enable
    /etc/init.d/dashboardd restart
@@ -124,7 +136,7 @@ The dashboard is organized into 5 structured panels:
    rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache*
    ```
 
-4. Open your browser and navigate to: **LuCI → Status → Dashboard**.
+5. Refresh your browser: **LuCI → Status → Dashboard**.
 
 ---
 
@@ -290,14 +302,31 @@ luci-app-dashboard/
 
 ### Cài Đặt Nhanh
 
+#### Cách 1: Cài qua giao diện Web LuCI (Dễ nhất, không cần gõ lệnh)
+1. Đăng nhập trang quản trị LuCI của router (`http://192.168.1.1`).
+2. Vào mục **Hệ thống (System)** ➔ **Phần mềm (Software)**.
+3. Dán đường link tải trực tiếp sau vào ô **"Download and install package"**:
+   ```text
+   https://github.com/pmkhue/openwrt-dashboard/releases/latest/download/luci-app-dashboard.ipk
+   ```
+4. Nhấn **OK**. Router sẽ tự động tải về, cài đặt và kích hoạt dashboard.
+
+---
+
+#### Cách 2: Cài qua SSH Terminal (Dùng lệnh `opkg` trực tiếp qua URL)
+
 ```sh
-# 1. Cài đặt các gói phụ thuộc cần thiết
+# 1. Cài đặt các gói phụ thuộc bắt buộc
 opkg update
 opkg install rpcd ubus jsonfilter ethtool
 
-# 2. Tải và cài đặt gói IPK
-wget -O /tmp/luci-app-dashboard_1.0-1_all.ipk <link_tai_file_ipk>
-opkg install /tmp/luci-app-dashboard_1.0-1_all.ipk
+# 2. Cài đặt trực tiếp qua link GitHub Release (không cần tải trước về máy tính)
+opkg install https://github.com/pmkhue/openwrt-dashboard/releases/latest/download/luci-app-dashboard.ipk
+
+# (Lưu ý: Nếu router báo lỗi SSL/Connection failed, cài thêm gói hỗ trợ SSL:)
+# opkg update && opkg install ca-bundle libustream-mbedtls
+# Hoặc tải qua wget bỏ qua chứng chỉ rồi cài:
+# wget --no-check-certificate -O /tmp/luci-app-dashboard.ipk https://github.com/pmkhue/openwrt-dashboard/releases/latest/download/luci-app-dashboard.ipk && opkg install /tmp/luci-app-dashboard.ipk
 
 # 3. Kích hoạt dịch vụ và làm mới giao diện LuCI
 /etc/init.d/dashboardd enable
@@ -307,6 +336,16 @@ rm -rf /tmp/luci-indexcache* /tmp/luci-modulecache*
 ```
 
 Truy cập trên trình duyệt: **Trạng thái → Bảng điều khiển (Status → Dashboard)**.
+
+---
+
+### 🤖 Tự Động Build Bằng GitHub Actions
+Repository đã được tích hợp sẵn GitHub Actions (`.github/workflows/build-release.yml`):
+- Mỗi khi bạn `push` code lên nhánh `main`, tạo `tag` mới, hoặc bấm nút **Run workflow** trong tab Actions trên GitHub:
+  - Hệ thống sẽ tự động kiểm tra cú pháp và build gói IPK.
+  - Tự động tạo bản phát hành **GitHub Release** công khai.
+  - Cung cấp link URL tải trực tiếp `.../releases/latest/download/luci-app-dashboard.ipk` để bạn copy dán thẳng vào router.
+  - Toàn bộ link và lệnh cài đặt sẽ được in sẵn ở mục **Summary** của lượt chạy GitHub Actions.
 
 ---
 

@@ -1,0 +1,174 @@
+name: Build and Release OpenWrt Package
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Tùy chọn tag phiên bản (bỏ trống để tự động lấy từ Makefile/build_ipk.py)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build IPK & Publish Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate and Compile IPK Package
+        run: |
+          make clean
+          make compile
+
+      - name: Inspect Package & Prepare Release Assets
+        id: pkg_info
+        run: |
+          PKG_FILE=$(ls bin/packages/luci-app-dashboard_*.ipk | head -n 1)
+          PKG_BASENAME=$(basename "$PKG_FILE")
+          echo "Found compiled package: $PKG_FILE"
+
+          # Tạo file alias cố định (không gắn version) để link tải latest luôn không đổi
+          cp "$PKG_FILE" bin/packages/luci-app-dashboard.ipk
+
+          # Tính mã băm SHA256
+          cd bin/packages
+          sha256sum *.ipk > sha256sums.txt
+          cd - > /dev/null
+
+          # Trích xuất thông tin gói
+          PKG_NAME=$(python3 -c 'import re; print(re.search(r"PKG_NAME\s*=\s*[\"\x27]([^\"\x27]+)[\"\x27]", open("scripts/build_ipk.py").read()).group(1))')
+          PKG_VERSION=$(python3 -c 'import re; print(re.search(r"PKG_VERSION\s*=\s*[\"\x27]([^\"\x27]+)[\"\x27]", open("scripts/build_ipk.py").read()).group(1))')
+          PKG_ARCH=$(python3 -c 'import re; print(re.search(r"PKG_ARCH\s*=\s*[\"\x27]([^\"\x27]+)[\"\x27]", open("scripts/build_ipk.py").read()).group(1))')
+          IPK_SIZE=$(du -h "$PKG_FILE" | awk '{print $1}')
+
+          # Xác định tên tag phát hành
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG_NAME="${{ github.ref_name }}"
+          elif [ -n "${{ inputs.release_tag }}" ]; then
+            TAG_NAME="${{ inputs.release_tag }}"
+          else
+            TAG_NAME="v${PKG_VERSION}"
+          fi
+
+          echo "pkg_name=${PKG_NAME}" >> "$GITHUB_OUTPUT"
+          echo "pkg_version=${PKG_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "pkg_arch=${PKG_ARCH}" >> "$GITHUB_OUTPUT"
+          echo "pkg_file=${PKG_BASENAME}" >> "$GITHUB_OUTPUT"
+          echo "ipk_size=${IPK_SIZE}" >> "$GITHUB_OUTPUT"
+          echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Artifacts (Workflow Storage)
+        uses: actions/upload-artifact@v4
+        with:
+          name: luci-app-dashboard-packages
+          path: |
+            bin/packages/*.ipk
+            bin/packages/sha256sums.txt
+          retention-days: 14
+
+      - name: Publish GitHub Release
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.pkg_info.outputs.tag_name }}
+          name: ${{ steps.pkg_info.outputs.pkg_name }} ${{ steps.pkg_info.outputs.tag_name }}
+          files: |
+            bin/packages/*.ipk
+            bin/packages/sha256sums.txt
+          generate_release_notes: true
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Job Summary
+        if: always() && steps.pkg_info.outputs.tag_name != ''
+        run: |
+          cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+          # 🎉 Build & Packaging Succeeded!
+
+          | Gói phần mềm | Phiên bản | Kiến trúc | Kích thước |
+          | :--- | :--- | :--- | :--- |
+          | `${{ steps.pkg_info.outputs.pkg_name }}` | `${{ steps.pkg_info.outputs.pkg_version }}` | `${{ steps.pkg_info.outputs.pkg_arch }}` | `${{ steps.pkg_info.outputs.ipk_size }}` |
+
+          ---
+
+          ## 🔗 URL Cài Đặt Trực Tiếp (Direct Install URLs)
+
+          > [!TIP]
+          > Các link dưới đây là link công khai (public download link), router OpenWrt có thể tải và cài đặt trực tiếp không cần đăng nhập.
+
+          - 🌟 **Link bản mới nhất (Luôn cập nhật bản mới nhất khi build):**
+            ```text
+            https://github.com/${{ github.repository }}/releases/latest/download/luci-app-dashboard.ipk
+            ```
+          - 🏷️ **Link phiên bản cố định (`${{ steps.pkg_info.outputs.tag_name }}`):**
+            ```text
+            https://github.com/${{ github.repository }}/releases/download/${{ steps.pkg_info.outputs.tag_name }}/${{ steps.pkg_info.outputs.pkg_file }}
+            ```
+
+          ---
+
+          ## 🚀 Hướng Dẫn Cài Đặt Lên Router OpenWrt
+
+          ### Cách 1: Qua giao diện Web LuCI (Dễ nhất, không cần SSH)
+          1. Đăng nhập vào LuCI qua trình duyệt (`http://192.168.1.1`).
+          2. Vào menu: **System (Hệ thống)** ➔ **Software (Phần mềm)**.
+          3. Dán URL sau vào ô **Download and install package (Tải xuống và cài đặt gói)**:
+             ```text
+             https://github.com/${{ github.repository }}/releases/latest/download/luci-app-dashboard.ipk
+             ```
+          4. Bấm **OK** để router tự tải và kích hoạt gói!
+
+          ---
+
+          ### Cách 2: Qua SSH Terminal (Dùng lệnh opkg)
+          Mở Terminal SSH vào router (`ssh root@192.168.1.1`) và chạy:
+
+          ```sh
+          # 1. Cập nhật danh sách gói và cài đặt các phụ thuộc bắt buộc
+          opkg update
+          opkg install rpcd ubus jsonfilter ethtool
+
+          # 2. Cài đặt trực tiếp qua đường link URL
+          opkg install https://github.com/${{ github.repository }}/releases/latest/download/luci-app-dashboard.ipk
+          ```
+
+          > [!NOTE]
+          > **Nếu router báo lỗi `SSL support not available` hoặc `Connection failed`:**
+          > Chạy lệnh sau để bổ sung thư viện SSL cho opkg/wget:
+          > ```sh
+          > opkg update && opkg install ca-bundle libustream-mbedtls
+          > ```
+          > Hoặc tải về thư mục tạm `/tmp` bằng `wget --no-check-certificate` rồi cài:
+          > ```sh
+          > wget --no-check-certificate -O /tmp/luci-app-dashboard.ipk https://github.com/${{ github.repository }}/releases/latest/download/luci-app-dashboard.ipk
+          > opkg install /tmp/luci-app-dashboard.ipk
+          > ```
+          EOF
